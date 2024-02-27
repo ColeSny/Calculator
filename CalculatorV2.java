@@ -14,15 +14,18 @@ public class CalculatorV2{
         double two = 0.0;
         //loop to continue calculating.
         while(input != 6){
-            if(usePrev == false){
-                System.out.print("Please enter your first number: ");
-                one = kb.nextDouble();
-                System.out.print("Please enter your second number: ");
-                two = kb.nextDouble();
-            } else {
-                System.out.print("Please enter the number youd like to calculate" + prev +" with: ");
+
+            if(usePrev == true){
+                System.out.print("Please enter the number youd like to calculate " + prev + " with: ");
                 one = kb.nextDouble();
                 //at this point prev will always be the second number in the calculation.
+
+            } else if(usePrev == false) {
+                System.out.print("Please enter your first number: ");
+                one = kb.nextDouble();
+                
+                System.out.print("Please enter your second number: ");
+                two = kb.nextDouble();
             }
     
             System.out.println("Please choose a function: ");
@@ -40,12 +43,22 @@ public class CalculatorV2{
             }else if(input == 5){
                 o = new Modulus();
             }
+            
             if(usePrev == false){
                 System.out.println(solve(one,two,o));
-            }else{
+            }else if(usePrev == true){
                 System.out.println(solve(one,prev,o));
             }
-            
+
+            System.out.println("Would you like to use the answer from your previous calculation (y/n): ");
+            String prevCheck = kb.next();
+
+            if(prevCheck == "y" || prevCheck == "Y"){
+                usePrev = true;
+            }else if(prevCheck == "n" || prevCheck == "N"){
+                usePrev = false;
+            } 
+
         }
         System.out.println("Exiting...");
         kb.close();
@@ -54,7 +67,7 @@ public class CalculatorV2{
 
     public static double solve(double x, double y, Operator o){
         double ret = o.calculate(x,y);
-        prev = ret;
+        prev = o.calculate(x,y);
         return ret;
     }
 
